@@ -1,11 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
-    <script>var fb = new Firebase("https://158playsmax.firebaseio.com");</script> 
     <meta charset="UTF-8">
     <title></title>
 </head>
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1>158playsmax</h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1>Currently logged in as:</h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="name-input" placeholder="Name">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" id="login-button" class="btn btn-default">Sign in</button>
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row notepicker">
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">C</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">D</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">E</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">F</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">G</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">A</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">B</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default">C</button>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
 </body>
+<script>
+    var test;
+    var users = new Firebase("https://158playsmax.firebaseio.com/users");
+    var currentuser;
+    $(".notepicker").css("display","none");
+    $("#login-button").click(function() {
+        var userexists = false; 
+        users.on('value', function (snapshot) {
+            test = snapshot.val();
+        }, function (errorObject) {
+        }); 
+        users.on('value', function (snapshot) {
+            for (key of Object.keys(snapshot.val())){
+                if (snapshot.val()[key]["username"]==$("#name-input").val()){
+                    userexists = true;
+                    break;
+                }
+            } 
+        }, function (errorObject) {
+        }); 
+        if (!userexists){
+            users.push({
+                username: $("#name-input").val()
+            });
+            currentuser = $("#name-input");
+            $(".notepicker").css("display","block");
+        }
+        else{
+            alert("user already exists");
+        }
+    });
+</script> 
 </html>
