@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1>158playsmax</h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1>Currently logged in as: <span id="currentuserspan"></span> </h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="name-input" placeholder="Name">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" id="login-button" class="btn btn-default">Sign in</button>
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row notepicker">
+            <div class="col-md-2"></div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note1">C</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note2">D</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note3">E</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note4">F</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note5">G</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note6">A</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note7">B</button>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-default notebtn note8">C</button>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</body>
+<script>
+    var test;
+    var users = new Firebase("https://158playsmax.firebaseio.com/users");
+    var notes = new Firebase("https://158playsmax.firebaseio.com/notes");
+    var currentuser;
+    function getNotes(){
+    }
+    function getUsers(){
+        users.on('value', function (snapshot) {
+            for (key of Object.keys(snapshot.val())){
+                console.log(key);
+                if (snapshot.val()[key]["username"]==$("#name-input").val()){
+                    console.log(true);
+                    userexists = true;
+                    break;
+                }
+            } 
+        }, function (errorObject) {
+        }); 
+    }
+    $(".notepicker").css("display","none");
+    $(".notebtn").click(function() {
+        console.log($(this));
+        console.log($(this).text());
+            currentuser = $("#name-input");
+        notes.push({
+            note: {
+                noteval: $(this).text(),
+                user: currentuser 
+            }
+        });
+    });
+    $("#login-button").click(function() {
+        var userexists = false; 
+        console.log("qqqqq");
+        console.log("ffff");
+        if (!userexists){
+            console.log("hello");
+            users.push({
+                username: $("#name-input").val()
+            });
+            currentuser = $("#name-input").val();
+            $("#currentuserspan").text(currentuser);
+            $(".notepicker").css("display","block");
+        }else{
+            console.log("goodbye");
+            alert("user already exists");
+            $(".notepicker").css("display","block");
+        }
+    });
+</script> 
+</html>
