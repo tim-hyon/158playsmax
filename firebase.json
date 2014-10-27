@@ -1,0 +1,9 @@
+{
+  "firebase": "158playsmax",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}
