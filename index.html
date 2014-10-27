@@ -5,6 +5,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/1.1.2/firebase.js"></script>
+    <script src="node_modules/osc/dist/osc-browser.min.js"></script>
     <meta charset="UTF-8">
     <title></title>
 </head>
@@ -43,28 +44,28 @@
         <div class="row notepicker">
             <div class="col-md-2"></div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note1">C</button>
+                <button type="button" id="60" class="btn btn-default notebtn note1">C</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note2">D</button>
+                <button type="button" id="62" class="btn btn-default notebtn note2">D</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note3">E</button>
+                <button type="button" id="64" class="btn btn-default notebtn note3">E</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note4">F</button>
+                <button type="button" id="65" class="btn btn-default notebtn note4">F</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note5">G</button>
+                <button type="button" id="67" class="btn btn-default notebtn note5">G</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note6">A</button>
+                <button type="button" id="69" class="btn btn-default notebtn note6">A</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note7">B</button>
+                <button type="button" id="71" class="btn btn-default notebtn note7">B</button>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-default notebtn note8">C</button>
+                <button type="button" id="72" class="btn btn-default notebtn note8">C</button>
             </div>
             <div class="col-md-2"></div>
         </div>
@@ -88,6 +89,7 @@
 </body>
 <script>
     var test;
+    var fb = new Firebase("https://158playsmax.firebaseio.com");
     var users = new Firebase("https://158playsmax.firebaseio.com/users");
     var notes = new Firebase("https://158playsmax.firebaseio.com/notes");
     var currentuser;
@@ -95,15 +97,10 @@
         var newnote = snapshot.val();
         $('#lastuser').text(newnote.user)
         $('#lastnote').text(newnote.noteval)
+        fb.update({
+            note: newnote.noteval
+        }); 
     });
-    /*
-    notes.on('value', function (snapshot) {
-        $('#lastuser').val(snapshot.val())
-        $('#lastnote').val(snapshot.val())
-    }, function (errorObject) {
-    }); 
-    */
-
     function getUsers(){
         users.on('value', function (snapshot) {
             for (key of Object.keys(snapshot.val())){
@@ -120,7 +117,7 @@
     $(".notebtn").click(function() {
         currentuser = $("#name-input").val();
         notes.push({
-                noteval: $(this).text(),
+                noteval: parseInt($(this).attr('id')),
                 user: currentuser 
         });
     });
