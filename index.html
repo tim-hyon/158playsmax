@@ -75,8 +75,6 @@
     var users = new Firebase("https://158playsmax.firebaseio.com/users");
     var notes = new Firebase("https://158playsmax.firebaseio.com/notes");
     var currentuser;
-    function getNotes(){
-    }
     function getUsers(){
         users.on('value', function (snapshot) {
             for (key of Object.keys(snapshot.val())){
@@ -94,18 +92,16 @@
     $(".notebtn").click(function() {
         console.log($(this));
         console.log($(this).text());
-            currentuser = $("#name-input");
+        currentuser = $("#name-input").val();
         notes.push({
-            note: {
                 noteval: $(this).text(),
                 user: currentuser 
-            }
         });
     });
     $("#login-button").click(function() {
         var userexists = false; 
         console.log("start");
-        users.once('value', function (snapshot) {
+        users.on('value', function (snapshot) {
             console.log("in");
             for (key of Object.keys(snapshot.val())){
                 console.log(key);
