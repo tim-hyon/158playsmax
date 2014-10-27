@@ -104,6 +104,20 @@
     });
     $("#login-button").click(function() {
         var userexists = false; 
+        console.log("start");
+        users.once('value', function (snapshot) {
+            console.log("in");
+            for (key of Object.keys(snapshot.val())){
+                console.log(key);
+                if (snapshot.val()[key]["username"]==$("#name-input").val()){
+                    console.log(true);
+                    userexists = true;
+                    break;
+                }
+            } 
+        }, function (errorObject) {
+        }); 
+        console.log("after");
         if (!userexists){
             console.log("hello");
             users.push({
