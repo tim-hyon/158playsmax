@@ -75,19 +75,9 @@
     var users = new Firebase("https://158playsmax.firebaseio.com/users");
     var notes = new Firebase("https://158playsmax.firebaseio.com/notes");
     var currentuser;
-    $(".notepicker").css("display","none");
-    $(".notebtn").click(function() {
-        console.log($(this));
-        console.log($(this).text());
-        notes.push({
-            note: {
-                noteval: $(this).text(),
-                user: currentuser 
-            }
-        });
-    });
-    $("#login-button").click(function() {
-        var userexists = false; 
+    function getNotes(){
+    }
+    function getUsers(){
         users.on('value', function (snapshot) {
             for (key of Object.keys(snapshot.val())){
                 console.log(key);
@@ -99,6 +89,23 @@
             } 
         }, function (errorObject) {
         }); 
+    }
+    $(".notepicker").css("display","none");
+    $(".notebtn").click(function() {
+        console.log($(this));
+        console.log($(this).text());
+            currentuser = $("#name-input");
+        notes.push({
+            note: {
+                noteval: $(this).text(),
+                user: currentuser 
+            }
+        });
+    });
+    $("#login-button").click(function() {
+        var userexists = false; 
+        console.log("qqqqq");
+        console.log("ffff");
         if (!userexists){
             console.log("hello");
             users.push({
