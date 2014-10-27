@@ -68,6 +68,22 @@
             </div>
             <div class="col-md-2"></div>
         </div>
+        <div class="row lastnote">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h3>
+                    Last note added:
+                </h3>
+                <br>
+                <h4>
+                    user:<span id="lastuser"></span>
+                </h4>
+                <h4>
+                    note:<span id="lastnote"></span>
+                </h4>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
     </div>
 </body>
 <script>
@@ -75,12 +91,23 @@
     var users = new Firebase("https://158playsmax.firebaseio.com/users");
     var notes = new Firebase("https://158playsmax.firebaseio.com/notes");
     var currentuser;
+    notes.on('child_added', function (snapshot) {
+        var newnote = snapshot.val();
+        $('#lastuser').text(newnote.user)
+        $('#lastnote').text(newnote.noteval)
+    });
+    /*
+    notes.on('value', function (snapshot) {
+        $('#lastuser').val(snapshot.val())
+        $('#lastnote').val(snapshot.val())
+    }, function (errorObject) {
+    }); 
+    */
+
     function getUsers(){
         users.on('value', function (snapshot) {
             for (key of Object.keys(snapshot.val())){
-                console.log(key);
                 if (snapshot.val()[key]["username"]==$("#name-input").val()){
-                    console.log(true);
                     userexists = true;
                     break;
                 }
@@ -89,9 +116,8 @@
         }); 
     }
     $(".notepicker").css("display","none");
+    $(".lastnote").css("display","none");
     $(".notebtn").click(function() {
-        console.log($(this));
-        console.log($(this).text());
         currentuser = $("#name-input").val();
         notes.push({
                 noteval: $(this).text(),
@@ -100,32 +126,27 @@
     });
     $("#login-button").click(function() {
         var userexists = false; 
-        console.log("start");
         users.on('value', function (snapshot) {
-            console.log("in");
             for (key of Object.keys(snapshot.val())){
-                console.log(key);
                 if (snapshot.val()[key]["username"]==$("#name-input").val()){
-                    console.log(true);
                     userexists = true;
                     break;
                 }
             } 
         }, function (errorObject) {
         }); 
-        console.log("after");
         if (!userexists){
-            console.log("hello");
             users.push({
                 username: $("#name-input").val()
             });
             currentuser = $("#name-input").val();
             $("#currentuserspan").text(currentuser);
             $(".notepicker").css("display","block");
+            $(".lastnote").css("display","block");
         }else{
-            console.log("goodbye");
             alert("user already exists");
-            $(".notepicker").css("display","block");
+            $(".notepicker").css("display","none");
+            $(".lastnote").css("display","none");
         }
     });
 </script> 
